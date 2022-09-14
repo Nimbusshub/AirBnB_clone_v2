@@ -11,6 +11,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 import utils
+import re
 
 
 class HBNBCommand(cmd.Cmd):
@@ -137,7 +138,8 @@ class HBNBCommand(cmd.Cmd):
             if not utils.is_floatstring(value):
                 if ' ' in value:
                     return
-                val = value.strip('"\'').replace('_', ' ')
+                value = value.replace('_', ' ')
+                value = value.strip('"')
             if utils.is_floatstring(value) == 1:
                 return
             clsName = args_split[0] + "." + eval(args_split[0])().id
