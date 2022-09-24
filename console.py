@@ -21,19 +21,19 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
-    #create states
-    #all states
+    # create states
+    # all states
 
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -121,35 +121,38 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, args):
         """ Create an object of any class"""
         args_split = args.split()
-        
+
         if not args_split[0]:
             print("** class name missing **")
             return
         elif args_split[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        
+
         else:
             if (len(args_split) == 1):
                 print(eval(args_split[0])().id)
                 storage.save()
                 return False
-            key, value = args_split[1].split('=')
-            if not utils.is_floatstring(value):
-                if ' ' in value:
-                    return
-                value = value.replace('_', ' ')
-                value = value.strip('"')
-            if utils.is_floatstring(value) == 1:
-                return
             clsName = args_split[0] + "." + eval(args_split[0])().id
-            setattr(storage.all()[clsName], key, value)
-            print(eval(args_split[0])().id)
+            for arg in args_split[1:]:
+                key, value = arg.split('=')
+
+                if not utils.is_floatstring(value):
+                    if ' ' in value:
+                        return
+                    value = value.replace('_', ' ')
+                    value = value.strip('"')
+                if utils.is_floatstring(value) == 1:
+                    try:
+                        value = int(value)
+                    except Exception:
+                        value = float(value)
+
+                setattr(storage.all()[clsName], key, value)
+            _, id = clsName.split('.')
+            print(id)
             storage.all()[clsName].save()
-        #new_instance = HBNBCommand.classes[args]()
-        #storage.save()
-        #print(new_instance.id)
-        #storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -305,7 +308,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-            if not att_name and args[0]  != ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
@@ -344,6 +347,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
