@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """"Fabric script that distributes an archive to web servers"""
 
-from ssl import ALERT_DESCRIPTION_BAD_CERTIFICATE
 from fabric.api import *
 import os
 
