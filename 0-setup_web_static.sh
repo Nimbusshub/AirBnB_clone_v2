@@ -19,7 +19,7 @@ fi
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # Change ownership to user ubuntu
-sudo chown -hR "$USER":"$USER" /data
+sudo chown -hR ubuntu:ubuntu /data
 
 # Configure nginx to serve content pointed to by symbolic link to hbnb_static
 sudo sed -i '38i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
