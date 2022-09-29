@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Bash script that sets up your web servers for the deployment of web_static
 
-apt-get -y update
-apt-get install -y nginx
+sudo apt-get -y update
+sudo apt-get install -y nginx
 
 # Create all necessary directories and file
-mkdir -p /data/web_static/releases/test/
-mkdir -p /data/web_static/shared/
-touch /data/web_static/releases/test/index.html
-echo "Hello World again!" > /data/web_static/releases/test/index.html
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
+sudo touch /data/web_static/releases/test/index.html
+sudo echo "Hello World again!" > /data/web_static/releases/test/index.html
 
 # Check if directory current exist
 if [ -d "/data/web_static/current" ]
@@ -16,13 +16,13 @@ then
         sudo rm -rf /data/web_static/current
 fi
 # Create a symbolic link to test
-ln -sf /data/web_static/releases/test/ /data/web_static/current
+sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 
 # Change ownership to user ubuntu
-chown -hR "$USER":"$USER" /data
+sudo chown -hR "$USER":"$USER" /data
 
 # Configure nginx to serve content pointed to by symbolic link to hbnb_static
-sed -i '19i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
+sudo sed -i '19i\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}\n' /etc/nginx/sites-available/default
 
 # Restart server
-service nginx restart
+sudo service nginx restart
