@@ -10,6 +10,7 @@ import os
 
 
 def do_clean(number=0):
+    """Cleans all .tgz files"""
     """if os.path.exists('versions'):
         # with cd('versions'):
         # local('find ')
