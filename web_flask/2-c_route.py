@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """A script that starts a Flask web application"""
 from flask import Flask
-# from markupsafe import escape
+from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -17,9 +17,9 @@ def desplay_hbnb():
 
 
 @app.route("/c/<text>", strict_slashes=False)
-def display_c_variable(text):
+def display_cText(text):
     text = text.replace("_", " ")
-    return f"C {(text)}"
+    return "C %s" % (text)
 
 
 if __name__ == '__main__':
